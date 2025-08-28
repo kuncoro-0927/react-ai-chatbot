@@ -21,8 +21,10 @@ export class Assistant {
 
       return result.choices[0].message.content;
     } catch (error) {
-      console.error("Chat error:", error);
-      return "Sorry, something went wrong.";
+      if (error.status === 429) {
+        return "⚠️ Rate limit tercapai / quota habis. Silakan cek billing OpenAI.";
+      }
+      throw error;
     }
   }
 }
