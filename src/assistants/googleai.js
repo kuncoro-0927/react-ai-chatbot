@@ -3,7 +3,7 @@
 import { GoogleGenAI } from "@google/genai";
 
 const googleai = new GoogleGenAI({
-  apiKey: import.meta.env.VITE_GOGGLE_AI_API_KEY,
+  apiKey: import.meta.env.VITE_GOOGLE_AI_API_KEY,
 });
 
 export class Assistant {
