@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
-import { Assistant } from "./asisstants/googleai";
+import { Assistant } from "./assistants/openai";
 import { Chat } from "./components/Chat/Chat";
 import { Controls } from "./components/Controls/Controls";
 import styles from "./App.module.css";
@@ -16,7 +16,7 @@ function App() {
   async function handleContentSend(content) {
     addMessage({ content, role: "user" });
     try {
-      const result = await assistant.chat(content);
+      const result = await assistant.chat(content, messages);
       addMessage({ content: result, role: "assistant" });
     } catch (error) {
       addMessage({
