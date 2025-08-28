@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useMemo, useState } from "react";
 import { Sidebar } from "./components/Sidebar/Sidebar";
 import { Chat } from "./components/Chat/Chat";
@@ -44,6 +43,18 @@ function App() {
     setAssistant(newAssistant);
   }
 
+  function updateChats(messages = []) {
+    setChats((prevChats) =>
+      prevChats.map((chat) =>
+        chat.id === activeChatId ? { ...chat, messages } : chat
+      )
+    );
+  }
+
+  function handleChatMessagesUpdate(messages) {
+    updateChats(messages);
+  }
+
   return (
     <div className={styles.App}>
       <header className={styles.Header}>
@@ -63,6 +74,7 @@ function App() {
             assistant={assistant}
             chatId={activeChatId}
             chatMessages={activeChatMessages}
+            onChatMessagesUpdate={handleChatMessagesUpdate}
           />
 
           <div className={styles.Configuration}>
