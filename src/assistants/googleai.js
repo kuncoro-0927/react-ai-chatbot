@@ -9,7 +9,7 @@ const googleai = new GoogleGenAI({
 export class Assistant {
   #chat;
 
-  constructor(model = "gemini-1.5-flash" + 1) {
+  constructor(model = "gemini-1.5-flash") {
     this.#chat = googleai.chats.create({ model });
   }
 
