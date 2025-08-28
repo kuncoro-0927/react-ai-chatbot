@@ -9,7 +9,7 @@ export class Assistant {
   #client;
   #model;
 
-  constructor(model = "gpt-4o-mini", client = openai) {
+  constructor(model = "gpt-4o-mini" + 1, client = openai) {
     this.#client = client;
     this.#model = model;
   }
@@ -23,8 +23,7 @@ export class Assistant {
 
       return result.choices[0].message.content;
     } catch (error) {
-      console.error("Chat error:", error);
-      return "Sorry, something went wrong.";
+      throw this.#parseError(error);
     }
   }
 
@@ -40,8 +39,11 @@ export class Assistant {
         yield chunk.choices[0]?.delta?.content || "";
       }
     } catch (error) {
-      console.error("Chat error:", error);
-      return "Sorry, something went wrong.";
+      throw this.#parseError(error);
     }
+  }
+
+  #parseError(error) {
+    return error;
   }
 }

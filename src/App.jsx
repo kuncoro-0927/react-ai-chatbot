@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { useState } from "react";
-import { Assistant } from "./assistants/googleai";
+import { Assistant } from "./assistants/openai";
 import { Loader } from "./components/Loader/Loader";
 import { Chat } from "./components/Chat/Chat";
 import { Controls } from "./components/Controls/Controls";
@@ -30,9 +29,12 @@ function App() {
     addMessage({ content, role: "user" });
     setIsLoading(true);
     try {
-      const result = await assistant.chatStream(content, messages);
-      let isFirstChunk = false;
+      const result = await assistant.chatStream(
+        content,
+        messages.filter(({ role }) => role !== "system")
+      );
 
+      let isFirstChunk = false;
       for await (const chunk of result) {
         if (!isFirstChunk) {
           isFirstChunk = true;
@@ -47,7 +49,9 @@ function App() {
       setIsStreaming(false);
     } catch (error) {
       addMessage({
-        content: "Sorry, I couldn't process your request. Please try again!",
+        content:
+          error?.message ??
+          "Sorry, I couldn't process your request. Please try again!",
         role: "system",
       });
       setIsLoading(false);
