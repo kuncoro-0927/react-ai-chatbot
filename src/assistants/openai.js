@@ -21,10 +21,25 @@ export class Assistant {
 
       return result.choices[0].message.content;
     } catch (error) {
-      if (error.status === 429) {
-        return "⚠️ Rate limit tercapai / quota habis. Silakan cek billing OpenAI.";
+      console.error("Chat error:", error);
+      return "Sorry, something went wrong.";
+    }
+  }
+
+  async *chatStream(content, history) {
+    try {
+      const result = await openai.chat.completions.create({
+        model: this.#model,
+        messages: [...history, { content, role: "user" }],
+        stream: true,
+      });
+
+      for await (const chunk of result) {
+        yield chunk.choices[0]?.delta?.content || "";
       }
-      throw error;
+    } catch (error) {
+      console.error("Chat error:", error);
+      return "Sorry, something went wrong.";
     }
   }
 }
